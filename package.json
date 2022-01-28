@@ -1,0 +1,90 @@
+{
+  "name": "2022-winter-practice-kanban",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/main.js",
+  "engines": {
+    "node": ">= 17"
+  },
+  "scripts": {
+    "start": "nodemon --exec babel-node -- ./src/index.js",
+    "build": "parcel build src/index.js",
+    "test": "jest",
+    "lint": "eslint ./src --ext .js",
+    "gen": "node ./src/swagger/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/aspirity/2022-winter-practice-kanban.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://bitbucket.org/aspirity/2022-winter-practice-kanban/issues"
+  },
+  "homepage": "https://bitbucket.org/aspirity/2022-winter-practice-kanban#readme",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "@sentry/node": "^6.16.1",
+    "@sentry/tracing": "^6.16.1",
+    "argon2": "^0.28.3",
+    "dotenv": "^14.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-json": "^2.0.2",
+    "koa-jwt": "^4.0.3",
+    "koa-router": "^8.0.8",
+    "koa2-swagger-ui": "^5.3.0",
+    "mongodb-memory-server": "^8.2.0",
+    "mongoose": "^6.1.6",
+    "regenerator-runtime": "^0.13.9",
+    "rollbar": "^2.24.0",
+    "supertest-koa-agent": "^0.3.2",
+    "swagger-autogen": "^2.18.8",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.10",
+    "@babel/node": "^7.16.8",
+    "@babel/plugin-transform-runtime": "^7.16.10",
+    "@parcel/babel-preset-env": "^2.2.1",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.1.0",
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^25.7.0",
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2",
+    "supertest-koa-agent": "^0.3.2",
+    "parcel": "^2.2.1"
+  },
+  "eslintConfig": {
+    "rules": {
+      "import/prefer-default-export": 0,
+      "import/no-dynamic-require": 0,
+      "no-underscore-dangle": 0
+    },
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
+    "plugins": [
+      "jest"
+    ],
+    "env": {
+      "node": true,
+      "jest": true
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "endOfLine": "auto",
+    "jsxSingleQuote": false,
+    "printWidth": 80
+  }
+}
