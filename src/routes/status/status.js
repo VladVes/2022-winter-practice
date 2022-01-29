@@ -8,10 +8,10 @@ export default (router) => {
    */
   router.get('/statuses', async (ctx) => {
     /* #swagger.tags = ['Statuses']
-       #swagger.description = 'Получение списка всех статусов'
+       #swagger.description = 'getting a list of all statuses'
        #swagger.responses[200] = {
-        description: 'Массив статусов',
-        schema: { $ref: '#/definitions/Status' }
+        description: 'array of statuses',
+        schema: { $ref: '#/definitions/Statuses' }
     } */
     try {
       ctx.body = await Status.find(ctx.request.query).lean();
@@ -26,10 +26,10 @@ export default (router) => {
    */
   router.get('/statuses/:id', async (ctx) => {
     /* #swagger.tags = ['Statuses']
-       #swagger.description = 'Получение одной статуса'
+       #swagger.description = 'getting a status by id'
        #swagger.responses[200] = {
-        description: 'Статус',
-        schema: { $ref: '#/definitions/Statuses' }
+        description: 'status',
+        schema: { $ref: '#/definitions/Status' }
     } */
     try {
       ctx.body = await Status.findById(ctx.params.id);
@@ -44,19 +44,19 @@ export default (router) => {
    */
   router.post('/statuses/create', async (ctx) => {
     /* #swagger.tags = ['Statuses']
-       #swagger.description = 'Создание статуса'
+       #swagger.description = 'create a new status'
 
-       #swagger.parameters['statuses'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Новый статус',
+         description: 'new status',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewStatus' }
        }
 
        #swagger.responses[200] = {
-        description: 'Созданный статус',
-        schema: { $ref: '#/definitions/Statuses' }
+        description: 'created status',
+        schema: { $ref: '#/definitions/Status' }
     } */
     const requestBody = ctx.request.body;
 
@@ -65,8 +65,8 @@ export default (router) => {
         name: requestBody.name,
       });
     } catch (error) {
-      ctx.body = error;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.body = error;
     }
   });
 
@@ -77,18 +77,18 @@ export default (router) => {
    */
   router.put('/statuses/update/:id', async (ctx) => {
     /* #swagger.tags = ['Statuses']
-       #swagger.description = 'Обновление существующего статуса'
+       #swagger.description = 'update an existing status'
 
-       #swagger.parameters['statuses'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Обновленные поля статуса',
+         description: 'status fields to update',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewStatus' }
        }
 
        #swagger.responses[200] = {
-        description: 'Обновленный статус',
+        description: 'updated status',
         schema: { $ref: '#/definitions/Statuses' }
     } */
     const requestBody = ctx.request.body;
@@ -103,8 +103,8 @@ export default (router) => {
         { new: true },
       );
     } catch (error) {
-      ctx.body = error;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.body = error;
     }
   });
 
@@ -115,14 +115,17 @@ export default (router) => {
    */
   router.delete('/statuses/delete/:id', async (ctx) => {
     /* #swagger.tags = ['Statuses']
-       #swagger.description = 'Удаление статуса'
-       #swagger.responses[200] = [] */
+       #swagger.description = 'status removal'
+       #swagger.responses[200] = {
+        description: 'removal success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
     try {
       await Status.deleteOne({ _id: ctx.params.id });
-      ctx.body = [];
+      ctx.body = { success: true };
     } catch (error) {
-      ctx.body = error;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.body = error;
     }
   });
 };

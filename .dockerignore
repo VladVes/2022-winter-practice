@@ -2,5 +2,5 @@ node_modules/
 .parcel-cache/
 dist/
 logs/
-.env
+.env*
 docker-compose

@@ -9,9 +9,9 @@ export default (router) => {
    */
   router.get('/users', async (ctx) => {
     /* #swagger.tags = ['Users']
-       #swagger.description = 'Получение списка всех пользователей'
+       #swagger.description = 'getting a list of all users'
        #swagger.responses[200] = {
-        description: 'Массив пользователей',
+        description: 'array of users',
         schema: { $ref: '#/definitions/Users' }
     } */
     try {
@@ -26,10 +26,10 @@ export default (router) => {
    * Получение пользователя по id.
    */
   router.get('/users/:id', async (ctx) => {
-    /* #swagger.tags = ['User']
-       #swagger.description = 'Получение одного пользователя'
+    /* #swagger.tags = ['Users']
+       #swagger.description = 'getting a user by id'
        #swagger.responses[200] = {
-        description: 'Массив пользователей',
+        description: 'user data',
         schema: { $ref: '#/definitions/User' }
     } */
     try {
@@ -44,19 +44,19 @@ export default (router) => {
    * Создание пользователя.
    */
   router.post('/users/create', async (ctx) => {
-    /* #swagger.tags = ['User']
-       #swagger.description = 'Создание пользователя'
+    /* #swagger.tags = ['Users']
+       #swagger.description = 'create a new user'
 
-       #swagger.parameters['user'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Новый пользователь',
+         description: 'new user',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewUser' }
        }
 
        #swagger.responses[200] = {
-        description: 'Созданный пользователь',
+        description: 'created user',
         schema: { $ref: '#/definitions/User' }
     } */
     const { name, email, password, projectIds = [] } = ctx.request.body;
@@ -85,19 +85,19 @@ export default (router) => {
    * @param id - идентификатор пользователя
    */
   router.put('/users/update/:id', async (ctx) => {
-    /* #swagger.tags = ['User']
-       #swagger.description = 'Обновление пользователя'
+    /* #swagger.tags = ['Users']
+       #swagger.description = 'update an existing user'
 
-       #swagger.parameters['task'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Обновленные поля пользователя',
+         description: 'user fields to update',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewUser' }
        }
 
        #swagger.responses[200] = {
-        description: 'Обновленный пользователь',
+        description: 'updated user',
         schema: { $ref: '#/definitions/User' }
     } */
     const requestBody = ctx.request.body;
@@ -124,15 +124,18 @@ export default (router) => {
    * @param id - идентификатор пользователя
    */
   router.delete('/users/delete/:id', async (ctx) => {
-    /* #swagger.tags = ['User']
-       #swagger.description = 'Удаление пользователя'
-       #swagger.responses[200] = [] */
+    /* #swagger.tags = ['Users']
+       #swagger.description = 'user removal'
+       #swagger.responses[200] = {
+        description: 'removal success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
     try {
       await User.deleteOne({ _id: ctx.params.id });
-      ctx.body = [];
+      ctx.body = { success: true };
     } catch (error) {
-      ctx.body = { error: error.message };
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.body = { error: error.message };
     }
   });
 };

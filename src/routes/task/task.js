@@ -8,14 +8,13 @@ export default (router) => {
    */
   router.get('/tasks', async (ctx) => {
     /* #swagger.tags = ['Tasks']
-       #swagger.description = 'Получение списка всех задач'
+       #swagger.description = 'getting a list of all tasks'
        #swagger.responses[200] = {
-        description: 'Массив задач',
+        description: 'array of tasks',
         schema: { $ref: '#/definitions/Tasks' }
     } */
     try {
       const tasks = await Task.find(ctx.request.query).lean();
-      // ctx.body = await Task.find(ctx.request.query);
       ctx.body = tasks;
     } catch (error) {
       ctx.body = error;
@@ -28,9 +27,9 @@ export default (router) => {
    */
   router.get('/tasks/:id', async (ctx) => {
     /* #swagger.tags = ['Tasks']
-       #swagger.description = 'Получение одной задачи'
+       #swagger.description = 'getting a task by id'
        #swagger.responses[200] = {
-        description: 'Задача',
+        description: 'task',
         schema: { $ref: '#/definitions/Task' }
     } */
     try {
@@ -46,18 +45,18 @@ export default (router) => {
    */
   router.post('/tasks/create', async (ctx) => {
     /* #swagger.tags = ['Tasks']
-       #swagger.description = 'Создание задачи'
+       #swagger.description = 'create a new task'
 
-       #swagger.parameters['tasks'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Новая задача',
+         description: 'new task',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewTask' }
        }
 
        #swagger.responses[200] = {
-        description: 'Созданная задача',
+        description: 'created task',
         schema: { $ref: '#/definitions/Task' }
     } */
 
@@ -86,18 +85,18 @@ export default (router) => {
    */
   router.put('/tasks/update/:id', async (ctx) => {
     /* #swagger.tags = ['Tasks']
-       #swagger.description = 'Обновление задачи'
+       #swagger.description = 'update an existing task'
 
-       #swagger.parameters['tasks'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Обновленные поля задачи',
+         description: 'task fields to update',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewTask' }
        }
 
        #swagger.responses[200] = {
-        description: 'Обновленная задача',
+        description: 'updated task',
         schema: { $ref: '#/definitions/Task' }
     } */
 
@@ -122,6 +121,12 @@ export default (router) => {
   });
 
   router.delete('/tasks/delete', async (ctx) => {
+    /* #swagger.tags = ['Tasks']
+       #swagger.description = 'all task removal'
+       #swagger.responses[200] = {
+        description: 'removal success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
     try {
       await Task.deleteMany();
       ctx.body = { success: true };
@@ -137,11 +142,14 @@ export default (router) => {
    */
   router.delete('/tasks/delete/:id', async (ctx) => {
     /* #swagger.tags = ['Tasks']
-       #swagger.description = 'Удаление задачи'
-       #swagger.responses[200] = [] */
+       #swagger.description = 'task removal'
+       #swagger.responses[200] = {
+        description: 'removal success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
     try {
       await Task.deleteOne({ _id: ctx.params.id });
-      ctx.body = [];
+      ctx.body = { success: true };
     } catch (error) {
       ctx.body = error;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);

@@ -8,7 +8,7 @@ node_modules/
 .parcel-cache/
 dist/
 logs/
-.env
+.env*
 
 # Compiled Java class files
 *.class

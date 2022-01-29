@@ -26,7 +26,7 @@ export function createApp(dbConnect) {
 
   const spec = JSON.parse(fs.readFileSync('./src/swagger/output.json'));
 
-  router.use('/auth', authRouter.routes());
+  router.use(authRouter.routes());
   withProtectedRoutes(router);
 
   app
@@ -48,7 +48,7 @@ export function createApp(dbConnect) {
     })
     .use(
       koaSwagger({
-        routePrefix: '/swagger',
+        routePrefix: '/api-doc',
         swaggerOptions: {
           spec,
         },

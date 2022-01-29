@@ -11,504 +11,114 @@
     "http"
   ],
   "paths": {
-    "/task/all": {
-      "get": {
-        "tags": [
-          "Task"
-        ],
-        "description": "Получение списка всех задач",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Массив задач",
-            "schema": {
-              "$ref": "#/definitions/Tasks"
-            }
-          }
-        }
-      }
-    },
-    "/task/{id}": {
-      "get": {
-        "tags": [
-          "Task"
-        ],
-        "description": "Получение одной задачи",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Задача",
-            "schema": {
-              "$ref": "#/definitions/Task"
-            }
-          }
-        }
-      }
-    },
-    "/task/create": {
+    "/auth/signup": {
       "post": {
         "tags": [
-          "Task"
+          "Auth"
         ],
-        "description": "Создание задачи",
+        "description": "sing up a new user",
         "parameters": [
           {
-            "name": "task",
+            "name": "credentials",
             "in": "body",
-            "description": "Новая задача",
+            "description": "new user credentials",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NewTask"
+              "$ref": "#/definitions/SignUpCred"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Созданная задача",
+            "description": "sign up success",
             "schema": {
-              "$ref": "#/definitions/Task"
+              "$ref": "#/definitions/Success"
             }
           }
         }
       }
     },
-    "/task/update/{id}": {
-      "put": {
-        "tags": [
-          "Task"
-        ],
-        "description": "Обновление задачи",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "task",
-            "in": "body",
-            "description": "Обновленные поля задачи",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewTask"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Обновленная задача",
-            "schema": {
-              "$ref": "#/definitions/Task"
-            }
-          }
-        }
-      }
-    },
-    "/task/delete/{id}": {
-      "delete": {
-        "tags": [
-          "Task"
-        ],
-        "description": "Удаление задачи",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/projects/all": {
-      "get": {
-        "tags": [
-          "Project"
-        ],
-        "description": "Получение списка всех проектов",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Массив проектов",
-            "schema": {
-              "$ref": "#/definitions/Project"
-            }
-          }
-        }
-      }
-    },
-    "/projects/{id}": {
-      "get": {
-        "tags": [
-          "Project"
-        ],
-        "description": "Получение конкретного проекта",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Проект",
-            "schema": {
-              "$ref": "#/definitions/Project"
-            }
-          }
-        }
-      }
-    },
-    "/projects/create": {
+    "/auth/login": {
       "post": {
         "tags": [
-          "Project"
+          "Auth"
         ],
-        "description": "Создание нового проекта",
+        "description": "login user",
         "parameters": [
           {
-            "name": "project",
+            "name": "credentials",
             "in": "body",
-            "description": "Новый проект",
+            "description": "user credentials",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NewProject"
+              "$ref": "#/definitions/UserLoginCred"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Созданный проект",
+            "description": "access and refresh tokens",
             "schema": {
-              "$ref": "#/definitions/Project"
+              "$ref": "#/definitions/Tokens"
             }
           }
         }
       }
     },
-    "/projects/update/{id}": {
-      "put": {
-        "tags": [
-          "Project"
-        ],
-        "description": "Обновление существующего проекта",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "project",
-            "in": "body",
-            "description": "Обновленные поля проекта",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewProject"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Обновленный проект",
-            "schema": {
-              "$ref": "#/definitions/Project"
-            }
-          }
-        }
-      }
-    },
-    "/projects/delete/{id}": {
-      "delete": {
-        "tags": [
-          "Project"
-        ],
-        "description": "Удаление проекта",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/board/all": {
-      "get": {
-        "tags": [
-          "Board"
-        ],
-        "description": "Получение списка всех досок",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Массив досок",
-            "schema": {
-              "$ref": "#/definitions/Boards"
-            }
-          }
-        }
-      }
-    },
-    "/board/{id}": {
-      "get": {
-        "tags": [
-          "Board"
-        ],
-        "description": "Получение одной доски",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Доска",
-            "schema": {
-              "$ref": "#/definitions/Board"
-            }
-          }
-        }
-      }
-    },
-    "/board/create": {
+    "/auth/refresh": {
       "post": {
         "tags": [
-          "Board"
+          "Auth"
         ],
-        "description": "Создание доски",
+        "description": "refresh access token",
         "parameters": [
           {
-            "name": "board",
+            "name": "token",
             "in": "body",
-            "description": "Новая доска",
+            "description": "user refresh token",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NewBoard"
+              "$ref": "#/definitions/RefreshToken"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Созданная доска",
+            "description": "access and refresh tokens",
             "schema": {
-              "$ref": "#/definitions/Board"
+              "$ref": "#/definitions/Tokens"
             }
           }
         }
       }
     },
-    "/board/update/{id}": {
-      "put": {
-        "tags": [
-          "Board"
-        ],
-        "description": "Обновление существующей доски",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "task",
-            "in": "body",
-            "description": "Обновленные поля доски",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewBoard"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Обновлённая доска",
-            "schema": {
-              "$ref": "#/definitions/Board"
-            }
-          }
-        }
-      }
-    },
-    "/board/delete/{id}": {
-      "delete": {
-        "tags": [
-          "Board"
-        ],
-        "description": "Удаление доски",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/status/all": {
-      "get": {
-        "tags": [
-          "Status"
-        ],
-        "description": "Получение списка всех статусов",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Массив статусов",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        }
-      }
-    },
-    "/status/{id}": {
-      "get": {
-        "tags": [
-          "Status"
-        ],
-        "description": "Получение одной статуса",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Статус",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        }
-      }
-    },
-    "/status/create": {
+    "/auth/logout": {
       "post": {
         "tags": [
-          "Status"
+          "Auth"
         ],
-        "description": "Создание статуса",
-        "parameters": [
-          {
-            "name": "status",
-            "in": "body",
-            "description": "Новый статус",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Созданный статус",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        }
-      }
-    },
-    "/status/update/{id}": {
-      "put": {
-        "tags": [
-          "Status"
-        ],
-        "description": "Обновление существующего статуса",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "Обновленные поля статуса",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Обновленный статус",
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        }
-      }
-    },
-    "/status/delete/{id}": {
-      "delete": {
-        "tags": [
-          "Status"
-        ],
-        "description": "Удаление статуса",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/users/all": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Получение списка всех пользователей",
+        "description": "user logout",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Массив пользователей",
+            "description": "logout success",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "getting a list of all users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "array of users",
             "schema": {
               "$ref": "#/definitions/Users"
             }
@@ -519,9 +129,9 @@
     "/users/{id}": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "description": "Получение одного пользователя",
+        "description": "getting a user by id",
         "parameters": [
           {
             "name": "id",
@@ -532,7 +142,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Массив пользователей",
+            "description": "user data",
             "schema": {
               "$ref": "#/definitions/User"
             }
@@ -543,14 +153,14 @@
     "/users/create": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "description": "Создание пользователя",
+        "description": "create a new user",
         "parameters": [
           {
-            "name": "user",
+            "name": "data",
             "in": "body",
-            "description": "Новый пользователь",
+            "description": "new user",
             "required": true,
             "schema": {
               "$ref": "#/definitions/NewUser"
@@ -559,7 +169,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Созданный пользователь",
+            "description": "created user",
             "schema": {
               "$ref": "#/definitions/User"
             }
@@ -570,9 +180,9 @@
     "/users/update/{id}": {
       "put": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "description": "Обновление пользователя",
+        "description": "update an existing user",
         "parameters": [
           {
             "name": "id",
@@ -581,9 +191,9 @@
             "type": "string"
           },
           {
-            "name": "task",
+            "name": "data",
             "in": "body",
-            "description": "Обновленные поля пользователя",
+            "description": "user fields to update",
             "required": true,
             "schema": {
               "$ref": "#/definitions/NewUser"
@@ -592,7 +202,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Обновленный пользователь",
+            "description": "updated user",
             "schema": {
               "$ref": "#/definitions/User"
             }
@@ -603,9 +213,9 @@
     "/users/delete/{id}": {
       "delete": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "description": "Удаление пользователя",
+        "description": "user removal",
         "parameters": [
           {
             "name": "id",
@@ -616,27 +226,591 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "removal success",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "description": "getting a list of all projects",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "array of projects",
+            "schema": {
+              "$ref": "#/definitions/Projects"
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "description": "getting a project by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "project",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/projects/create": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "description": "create a new project",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "new project",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewProject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "created project",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/projects/update/{id}": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "description": "update an existing project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "description": "project fields to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewProject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "updated project",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/projects/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Projects"
+        ],
+        "description": "project removal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "removal success",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          }
+        }
+      }
+    },
+    "/boards": {
+      "get": {
+        "tags": [
+          "Boards"
+        ],
+        "description": "getting a list of all boards",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "array of boards",
+            "schema": {
+              "$ref": "#/definitions/Boards"
+            }
+          }
+        }
+      }
+    },
+    "/boards/{id}": {
+      "get": {
+        "tags": [
+          "Boards"
+        ],
+        "description": "getting a board by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "board",
+            "schema": {
+              "$ref": "#/definitions/Board"
+            }
+          }
+        }
+      }
+    },
+    "/boards/create": {
+      "post": {
+        "tags": [
+          "Boards"
+        ],
+        "description": "create a new board",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "new board data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewBoard"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "created board",
+            "schema": {
+              "$ref": "#/definitions/Boards"
+            }
+          }
+        }
+      }
+    },
+    "/boards/update/{id}": {
+      "put": {
+        "tags": [
+          "Boards"
+        ],
+        "description": "update an existing board",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "description": "board fields to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewBoard"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "updated board",
+            "schema": {
+              "$ref": "#/definitions/Boards"
+            }
+          }
+        }
+      }
+    },
+    "/boards/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Boards"
+        ],
+        "description": "board removal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "removal success",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          }
+        }
+      }
+    },
+    "/statuses": {
+      "get": {
+        "tags": [
+          "Statuses"
+        ],
+        "description": "getting a list of all statuses",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "array of statuses",
+            "schema": {
+              "$ref": "#/definitions/Statuses"
+            }
+          }
+        }
+      }
+    },
+    "/statuses/{id}": {
+      "get": {
+        "tags": [
+          "Statuses"
+        ],
+        "description": "getting a status by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "status",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        }
+      }
+    },
+    "/statuses/create": {
+      "post": {
+        "tags": [
+          "Statuses"
+        ],
+        "description": "create a new status",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "new status",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "created status",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        }
+      }
+    },
+    "/statuses/update/{id}": {
+      "put": {
+        "tags": [
+          "Statuses"
+        ],
+        "description": "update an existing status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "description": "status fields to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "updated status",
+            "schema": {
+              "$ref": "#/definitions/Statuses"
+            }
+          }
+        }
+      }
+    },
+    "/statuses/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Statuses"
+        ],
+        "description": "status removal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "removal success",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "getting a list of all tasks",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "array of tasks",
+            "schema": {
+              "$ref": "#/definitions/Tasks"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "getting a task by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/create": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "create a new task",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "new task",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewTask"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "created task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/update/{id}": {
+      "put": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "update an existing task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "description": "task fields to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewTask"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "updated task",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/delete": {
+      "delete": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "all task removal",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "removal success",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          }
+        }
+      }
+    },
+    "/tasks/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Tasks"
+        ],
+        "description": "task removal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "removal success",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
           }
         }
       }
     }
   },
   "definitions": {
-    "Project": {
+    "Tokens": {
       "type": "object",
       "properties": {
-        "_id": {
+        "token": {
           "type": "string",
-          "example": "61e65cd062cdb8288b0e6484"
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjIxZmM1MjM3OGNjMzQzM2E3MTkxYiIsImlhdCI6MTY0MzQzNTI0MiwiZXhwIjoxNjQzNDM3MDQyfQ.j1tQjw1tK4qQBZ7Rcfvly2J5Q0THoWc7BiTnHPFIrGc"
+        },
+        "refreshToken": {
+          "type": "string",
+          "example": "ec59ea02-4610-43e5-ba81-a9fb084e82c5"
+        }
+      }
+    },
+    "RefreshToken": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "example": "ec59ea02-4610-43e5-ba81-a9fb084e82c5"
+        }
+      }
+    },
+    "SignUpCred": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string",
+          "example": "john@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "12345678"
         },
         "name": {
           "type": "string",
-          "example": "Тестовый проект"
-        },
-        "description": {
+          "example": "john"
+        }
+      }
+    },
+    "UserLoginCred": {
+      "type": "object",
+      "properties": {
+        "login": {
           "type": "string",
-          "example": "Супер классное описание для тестового проекта"
+          "example": "john@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "12345678"
+        }
+      }
+    },
+    "Success": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
         }
       }
     },
@@ -646,16 +820,33 @@
         "$ref": "#/definitions/Project"
       }
     },
+    "Project": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "61e65cd062cdb8288b0e6484"
+        },
+        "name": {
+          "type": "string",
+          "example": "default project"
+        },
+        "description": {
+          "type": "string",
+          "example": "default project description"
+        }
+      }
+    },
     "NewProject": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string",
-          "example": "Тестовый проект"
+          "example": "default project"
         },
         "description": {
           "type": "string",
-          "example": "Супер классное описание для тестового проекта"
+          "example": "default project description"
         }
       }
     },
@@ -668,7 +859,7 @@
         },
         "name": {
           "type": "string",
-          "example": "Тестовая доска"
+          "example": "default board"
         },
         "projectId": {
           "type": "string",
@@ -687,7 +878,7 @@
       "properties": {
         "name": {
           "type": "string",
-          "example": "Тестовая доска"
+          "example": "default board"
         },
         "projectId": {
           "type": "string",
@@ -825,7 +1016,7 @@
         },
         "name": {
           "type": "string",
-          "example": "Kraysik"
+          "example": "John Doe"
         },
         "email": {
           "type": "string",
@@ -844,11 +1035,24 @@
       "properties": {
         "name": {
           "type": "string",
-          "example": "Kraysik"
+          "example": "John Doe"
+        },
+        "password": {
+          "type": "string",
+          "example": "12345678"
         },
         "email": {
           "type": "string",
-          "example": "akrays@aspirity.com"
+          "example": "john@example.com"
+        },
+        "projectsId": {
+          "type": "array",
+          "example": [
+            "61e65d624327f14b2f7bf00c"
+          ],
+          "items": {
+            "type": "string"
+          }
         }
       }
     }

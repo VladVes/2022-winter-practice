@@ -8,9 +8,9 @@ export default (router) => {
    */
   router.get('/boards', async (ctx) => {
     /* #swagger.tags = ['Boards']
-       #swagger.description = 'Получение списка всех досок'
+       #swagger.description = 'getting a list of all boards'
        #swagger.responses[200] = {
-        description: 'Массив досок',
+        description: 'array of boards',
         schema: { $ref: '#/definitions/Boards' }
     } */
     try {
@@ -26,9 +26,9 @@ export default (router) => {
    */
   router.get('/boards/:id', async (ctx) => {
     /* #swagger.tags = ['Boards']
-       #swagger.description = 'Получение одной доски'
+       #swagger.description = 'getting a board by id'
        #swagger.responses[200] = {
-        description: 'Доска',
+        description: 'board',
         schema: { $ref: '#/definitions/Board' }
     } */
     try {
@@ -44,18 +44,18 @@ export default (router) => {
    */
   router.post('/boards/create', async (ctx) => {
     /* #swagger.tags = ['Boards']
-       #swagger.description = 'Создание доски'
+       #swagger.description = 'create a new board'
 
-       #swagger.parameters['boards'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Новая доска',
+         description: 'new board data',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewBoard' }
        }
 
        #swagger.responses[200] = {
-        description: 'Созданная доска',
+        description: 'created board',
         schema: { $ref: '#/definitions/Boards' }
     } */
     const requestBody = ctx.request.body;
@@ -78,18 +78,18 @@ export default (router) => {
    */
   router.put('/boards/update/:id', async (ctx) => {
     /* #swagger.tags = ['Boards']
-       #swagger.description = 'Обновление существующей доски'
+       #swagger.description = 'update an existing board'
 
-       #swagger.parameters['tasks'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Обновленные поля доски',
+         description: 'board fields to update',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewBoard' }
        }
 
        #swagger.responses[200] = {
-        description: 'Обновлённая доска',
+        description: 'updated board',
         schema: { $ref: '#/definitions/Boards' }
     } */
     const requestBody = ctx.request.body;
@@ -114,9 +114,12 @@ export default (router) => {
    * @param id - идентификатор задачи
    */
   router.delete('/boards/delete/:id', async (ctx) => {
-    /* #swagger.tags = ['Board']
-       #swagger.description = 'Удаление доски'
-       #swagger.responses[200] = [] */
+    /* #swagger.tags = ['Boards']
+       #swagger.description = 'board removal'
+       #swagger.responses[200] = {
+        description: 'removal success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
     console.log('DELETE', ctx.params);
     try {
       await Board.deleteOne({ _id: ctx.params.id });

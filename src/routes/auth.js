@@ -25,7 +25,20 @@ async function issueToken(userId) {
   };
 }
 
-router.post('/signup', async (ctx) => {
+router.post('/auth/signup', async (ctx) => {
+  /* #swagger.tags = ['Auth']
+       #swagger.description = 'sing up a new user'
+       #swagger.parameters['credentials'] = {
+         in: 'body',
+         description: 'new user credentials',
+         type: 'object',
+         required: true,
+         schema: { $ref: '#/definitions/SignUpCred' }
+       }
+       #swagger.responses[200] = {
+        description: 'sign up success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
   const { name, email, password } = ctx.request.body;
   try {
     if (password.length < 8) {
@@ -50,7 +63,20 @@ router.post('/signup', async (ctx) => {
   }
 });
 
-router.post('/login', async (ctx) => {
+router.post('/auth/login', async (ctx) => {
+  /* #swagger.tags = ['Auth']
+       #swagger.description = 'login user'
+       #swagger.parameters['credentials'] = {
+         in: 'body',
+         description: 'user credentials',
+         type: 'object',
+         required: true,
+         schema: { $ref: '#/definitions/UserLoginCred' }
+       }
+       #swagger.responses[200] = {
+        description: 'access and refresh tokens',
+        schema: { $ref: '#/definitions/Tokens' }
+    } */
   const { email, password } = ctx.request.body;
   const userRecord = await UserModel.findOne({ email });
   if (!userRecord || !(await argon2.verify(userRecord.password, password))) {
@@ -62,7 +88,20 @@ router.post('/login', async (ctx) => {
   ctx.body = await issueToken(userRecord._id);
 });
 
-router.post('/refresh', async (ctx) => {
+router.post('/auth/refresh', async (ctx) => {
+  /* #swagger.tags = ['Auth']
+       #swagger.description = 'refresh access token'
+       #swagger.parameters['token'] = {
+         in: 'body',
+         description: 'user refresh token',
+         type: 'object',
+         required: true,
+         schema: { $ref: '#/definitions/RefreshToken' }
+       }
+       #swagger.responses[200] = {
+        description: 'access and refresh tokens',
+        schema: { $ref: '#/definitions/Tokens' }
+    } */
   const { refreshToken } = ctx.request.body;
   const refreshTokenRecord = await RefreshTokenModel.findOneAndDelete({
     token: refreshToken,
@@ -78,9 +117,15 @@ router.post('/refresh', async (ctx) => {
 });
 
 router.post(
-  '/logout',
+  '/auth/logout',
   jwtMiddleware({ secret: config.secret }),
   async (ctx) => {
+    /* #swagger.tags = ['Auth']
+       #swagger.description = 'user logout'
+       #swagger.responses[200] = {
+        description: 'logout success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
     const { id: userId } = ctx.state.user;
     if (!userId) {
       const error = new Error();

@@ -8,9 +8,9 @@ export default (router) => {
    */
   router.get('/projects', async (ctx) => {
     /* #swagger.tags = ['Projects']
-       #swagger.description = 'Получение списка всех проектов'
+       #swagger.description = 'getting a list of all projects'
        #swagger.responses[200] = {
-        description: 'Массив проектов',
+        description: 'array of projects',
         schema: { $ref: '#/definitions/Projects' }
     } */
     try {
@@ -26,10 +26,10 @@ export default (router) => {
    */
   router.get('/projects/:id', async (ctx) => {
     /* #swagger.tags = ['Projects']
-       #swagger.description = 'Получение конкретного проекта'
+       #swagger.description = 'getting a project by id'
        #swagger.responses[200] = {
-        description: 'Проект',
-        schema: { $ref: '#/definitions/Projects' }
+        description: 'project',
+        schema: { $ref: '#/definitions/Project' }
     } */
     try {
       ctx.body = await Project.findById(ctx.params.id);
@@ -44,19 +44,19 @@ export default (router) => {
    */
   router.post('/projects/create', async (ctx) => {
     /* #swagger.tags = ['Projects']
-       #swagger.description = 'Создание нового проекта'
+       #swagger.description = 'create a new project'
 
-       #swagger.parameters['projects'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Новый проект',
+         description: 'new project',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewProject' }
        }
 
        #swagger.responses[200] = {
-        description: 'Созданный проект',
-        schema: { $ref: '#/definitions/Projects' }
+        description: 'created project',
+        schema: { $ref: '#/definitions/Project' }
     } */
     const requestBody = ctx.request.body;
 
@@ -78,18 +78,18 @@ export default (router) => {
    */
   router.put('/projects/update/:id', async (ctx) => {
     /* #swagger.tags = ['Projects']
-       #swagger.description = 'Обновление существующего проекта'
+       #swagger.description = 'update an existing project'
 
-       #swagger.parameters['projects'] = {
+       #swagger.parameters['data'] = {
          in: 'body',
-         description: 'Обновленные поля проекта',
+         description: 'project fields to update',
          type: 'object',
          required: true,
          schema: { $ref: '#/definitions/NewProject' }
        }
 
        #swagger.responses[200] = {
-        description: 'Обновленный проект',
+        description: 'updated project',
         schema: { $ref: '#/definitions/Project' }
     } */
     const requestBody = ctx.request.body;
@@ -116,8 +116,11 @@ export default (router) => {
    */
   router.delete('/projects/delete/:id', async (ctx) => {
     /* #swagger.tags = ['Projects']
-       #swagger.description = 'Удаление проекта'
-       #swagger.responses[200] = [] */
+       #swagger.description = 'project removal'
+       #swagger.responses[200] = {
+        description: 'removal success',
+        schema: { $ref: '#/definitions/Success' }
+    } */
     try {
       await Project.deleteOne({ _id: ctx.params.id });
       ctx.body = { success: true };
