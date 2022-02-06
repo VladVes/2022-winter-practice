@@ -6,6 +6,8 @@ const User = new Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     projectIds: { type: ['ObjectId'] },
+    boardIds: { type: ['ObjectId'] },
+    avatarLink: { type: String },
   },
   {
     collection: 'Users',

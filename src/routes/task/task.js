@@ -70,6 +70,7 @@ export default (router) => {
         assignedTo: requestBody.assignedTo,
         boardId: requestBody.boardId,
         statusId: requestBody.statusId,
+        elapsedTime: 0,
       });
       ctx.body = newTask;
     } catch (error) {
@@ -111,6 +112,7 @@ export default (router) => {
           assignedTo: requestBody.assignedTo,
           boardId: requestBody.boardId,
           statusId: requestBody.statusId,
+          elapsedTime: requestBody.elapsedTime,
         },
         { new: true },
       );

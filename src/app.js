@@ -17,6 +17,7 @@ Sentry.init({
 });
 
 export function createApp(dbConnect) {
+  console.log('createApp', 'start creating');
   const app = new Koa();
   const router = new Router();
 
@@ -63,5 +64,6 @@ export function createApp(dbConnect) {
     );
   });
 
+  console.log('createApp', 'app created');
   return app;
 }

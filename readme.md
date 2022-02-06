@@ -1,1 +1,1 @@
-## Canban board 2022 winter practice.
+## Kanban board 2022 winter practice.

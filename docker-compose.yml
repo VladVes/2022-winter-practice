@@ -1,27 +1,24 @@
----
-
-version: '1.0'
 services:
   web1:
-    image: localhost:5000/2022-wpk:1.0
+    image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3001:3000"
     env_file: 
       - ".env1"
   web2:
-    image: localhost:5000/2022-wpk:1.0
+    image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3002:3000"
     env_file: 
       - ".env2"
   web3:
-    image: localhost:5000/2022-wpk:1.0
+    image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3003:3000"
     env_file: 
       - ".env3"
   web4:
-    image: localhost:5000/2022-wpk:1.0
+    image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3004:3000"
     env_file: 

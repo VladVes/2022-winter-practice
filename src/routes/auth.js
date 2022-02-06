@@ -39,7 +39,14 @@ router.post('/auth/signup', async (ctx) => {
         description: 'sign up success',
         schema: { $ref: '#/definitions/Success' }
     } */
-  const { name, email, password } = ctx.request.body;
+  const {
+    name,
+    email,
+    password,
+    projectIds = [],
+    boardIds = [],
+    avatarLink = '',
+  } = ctx.request.body;
   try {
     if (password.length < 8) {
       const error = new Error(`Password must be at least 8 characters`);
@@ -54,7 +61,9 @@ router.post('/auth/signup', async (ctx) => {
       name,
       email,
       password: await argon2.hash(password),
-      projectIds: [],
+      projectIds,
+      boardIds,
+      avatarLink,
     });
     ctx.body = { success: true };
   } catch (error) {

@@ -59,8 +59,19 @@ export default (router) => {
         description: 'created user',
         schema: { $ref: '#/definitions/User' }
     } */
-    const { name, email, password, projectIds = [] } = ctx.request.body;
+    const {
+      name,
+      email,
+      password,
+      projectIds = [],
+      boardIds = [],
+      avatarLink = '',
+    } = ctx.request.body;
     try {
+      if (password.length < 8) {
+        const error = new Error(`Password must be at least 8 characters`);
+        throw error;
+      }
       const user = await User.findOne({ email });
       if (user) {
         const error = new Error(`User with ${email} already exists`);
@@ -71,6 +82,8 @@ export default (router) => {
         email,
         password: await argon2.hash(password),
         projectIds,
+        boardIds,
+        avatarLink,
       });
       ctx.body = { success: true };
     } catch (error) {
@@ -100,15 +113,27 @@ export default (router) => {
         description: 'updated user',
         schema: { $ref: '#/definitions/User' }
     } */
-    const requestBody = ctx.request.body;
+    const {
+      name,
+      email,
+      projectIds = [],
+      boardIds = [],
+      avatarLink = '',
+    } = ctx.request.body;
 
     try {
+      const user = await User.findOne({ email });
+      if (user) {
+        const error = new Error(`User with ${email} already exists`);
+        throw error;
+      }
       ctx.body = await User.findOneAndUpdate(
         { _id: ctx.params.id },
         {
-          name: requestBody.name,
-          email: requestBody.email,
-          $push: { projectIds: requestBody.projectIds },
+          name,
+          email,
+          avatarLink,
+          $push: { projectIds, boardIds },
         },
         { new: true },
       );

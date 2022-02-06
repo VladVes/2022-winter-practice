@@ -63,6 +63,7 @@ export default (router) => {
     try {
       ctx.body = await Status.create({
         name: requestBody.name,
+        boardsIds: requestBody.boardsIds,
       });
     } catch (error) {
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
