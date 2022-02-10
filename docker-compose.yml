@@ -3,23 +3,75 @@ services:
     image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3001:3000"
-    env_file: 
+    env_file:
       - ".env1"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.web1.rule: 'Host(`web1.${BASE_DOMAIN}`)'
+      traefik.http.routers.web1.entrypoints: web443
   web2:
     image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3002:3000"
-    env_file: 
+    env_file:
       - ".env2"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.web2.rule: 'Host(`web2.${BASE_DOMAIN}`)'
+      traefik.http.routers.web2.entrypoints: web443
   web3:
     image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3003:3000"
-    env_file: 
+    env_file:
       - ".env3"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.web3.rule: 'Host(`web3.${BASE_DOMAIN}`)'
+      traefik.http.routers.web3.entrypoints: web443
   web4:
     image: localhost:5000/2022-wpk:${VERSION?}
     ports:
       - "3004:3000"
-    env_file: 
+    env_file:
       - ".env4"
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.web4.rule: 'Host(`web4.${BASE_DOMAIN}`)'
+      traefik.http.routers.web4.entrypoints: web443
+  traefik:
+    image: traefik:2.3
+    logging:
+      options:
+        max-size: 1m
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certificates:/certificates
+    command:
+      - --api=true
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      - --entryPoints.web443.address=:443
+      - --entryPoints.web443.http.tls=true
+      - --entryPoints.web443.http.tls.certResolver=le-tls
+      - --entryPoints.web80.address=:80
+      - --entryPoints.web80.http.redirections.entryPoint.permanent=true
+      - --entryPoints.web80.http.redirections.entryPoint.scheme=https
+      - --entryPoints.web80.http.redirections.entryPoint.to=web443
+      - --accessLog.format=json
+      - --certificatesResolvers.le-tls.acme.email=letsencrypt@aspirity.com
+      - --certificatesResolvers.le-tls.acme.storage=/certificates/acme-tls.json
+      - --certificatesResolvers.le-tls.acme.tlschallenge=true
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.traefik.rule: Host(`traefik.${BASE_DOMAIN}`)
+      traefik.http.routers.traefik.service: api@internal
+      traefik.http.routers.traefik.entrypoints: web443
+      traefik.http.routers.traefik.priority: 9999
+      traefik.http.routers.traefik.middlewares: admin-auth
+      traefik.http.middlewares.admin-auth.basicauth.users: "..."
