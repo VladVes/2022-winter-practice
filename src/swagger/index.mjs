@@ -17,6 +17,12 @@ const doc = {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjIxZmM1MjM3OGNjMzQzM2E3MTkxYiIsImlhdCI6MTY0MzQzNTI0MiwiZXhwIjoxNjQzNDM3MDQyfQ.j1tQjw1tK4qQBZ7Rcfvly2J5Q0THoWc7BiTnHPFIrGc',
       refreshToken: 'ec59ea02-4610-43e5-ba81-a9fb084e82c5',
     },
+    UserLogin: {
+      userId: '61e65cd062cdb8288b0e6484',
+      token:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjIxZmM1MjM3OGNjMzQzM2E3MTkxYiIsImlhdCI6MTY0MzQzNTI0MiwiZXhwIjoxNjQzNDM3MDQyfQ.j1tQjw1tK4qQBZ7Rcfvly2J5Q0THoWc7BiTnHPFIrGc',
+      refreshToken: 'ec59ea02-4610-43e5-ba81-a9fb084e82c5',
+    },
     RefreshToken: {
       refreshToken: 'ec59ea02-4610-43e5-ba81-a9fb084e82c5',
     },
@@ -44,11 +50,13 @@ const doc = {
     Board: {
       _id: '61e65d624327f14b2f7bf00c',
       name: 'default board',
+      color: '#FFFFFF',
       projectId: '61e65cd062cdb8288b0e6484',
     },
     Boards: [{ $ref: '#/definitions/Board' }],
     NewBoard: {
       name: 'default board',
+      color: '#FFFFFF',
       projectId: '61e65cd062cdb8288b0e6484',
     },
     Task: {

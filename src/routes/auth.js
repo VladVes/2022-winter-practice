@@ -20,7 +20,6 @@ async function issueToken(userId) {
   });
   return {
     token: jwt.sign({ id: userId }, config.secret, { expiresIn: '1800000ms' }),
-    // token: jwt.sign({ id: userId }, config.secret),
     refreshToken,
   };
 }
@@ -48,17 +47,28 @@ router.post('/auth/signup', async (ctx) => {
     avatarLink = '',
   } = ctx.request.body;
   try {
-    if (password.length < 8) {
-      const error = new Error(`Password must be at least 8 characters`);
+    if (password.length < 8 || password.length > 128) {
+      const error = new Error(
+        `Password must be at least 8 and not exceed 128 characters`,
+      );
+      ctx.status = 401;
+      throw error;
+    }
+    if (email.length > 128 || name.length > 128) {
+      const error = new Error(
+        `Email and name length must not exceed 128 characters`,
+      );
+      ctx.status = 401;
       throw error;
     }
     const user = await UserModel.findOne({ email });
     if (user) {
       const error = new Error(`User with ${email} already exists`);
+      ctx.status = 409;
       throw error;
     }
     await UserModel.create({
-      name,
+      name: !name || name === '' ? 'user' : name,
       email,
       password: await argon2.hash(password),
       projectIds,
@@ -84,7 +94,7 @@ router.post('/auth/login', async (ctx) => {
        }
        #swagger.responses[200] = {
         description: 'access and refresh tokens',
-        schema: { $ref: '#/definitions/Tokens' }
+        schema: { $ref: '#/definitions/UserLogin' }
     } */
   const { email, password } = ctx.request.body;
   const userRecord = await UserModel.findOne({ email });
@@ -94,7 +104,12 @@ router.post('/auth/login', async (ctx) => {
     handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     throw error;
   }
-  ctx.body = await issueToken(userRecord._id);
+  const tokens = await issueToken(userRecord._id);
+
+  ctx.body = {
+    userId: userRecord._id,
+    ...tokens,
+  };
 });
 
 router.post('/auth/refresh', async (ctx) => {

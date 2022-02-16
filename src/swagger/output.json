@@ -59,7 +59,7 @@
           "200": {
             "description": "access and refresh tokens",
             "schema": {
-              "$ref": "#/definitions/Tokens"
+              "$ref": "#/definitions/UserLogin"
             }
           }
         }
@@ -766,6 +766,23 @@
         }
       }
     },
+    "UserLogin": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "61e65cd062cdb8288b0e6484"
+        },
+        "token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjIxZmM1MjM3OGNjMzQzM2E3MTkxYiIsImlhdCI6MTY0MzQzNTI0MiwiZXhwIjoxNjQzNDM3MDQyfQ.j1tQjw1tK4qQBZ7Rcfvly2J5Q0THoWc7BiTnHPFIrGc"
+        },
+        "refreshToken": {
+          "type": "string",
+          "example": "ec59ea02-4610-43e5-ba81-a9fb084e82c5"
+        }
+      }
+    },
     "RefreshToken": {
       "type": "object",
       "properties": {
@@ -861,6 +878,10 @@
           "type": "string",
           "example": "default board"
         },
+        "color": {
+          "type": "string",
+          "example": "#FFFFFF"
+        },
         "projectId": {
           "type": "string",
           "example": "61e65cd062cdb8288b0e6484"
@@ -879,6 +900,10 @@
         "name": {
           "type": "string",
           "example": "default board"
+        },
+        "color": {
+          "type": "string",
+          "example": "#FFFFFF"
         },
         "projectId": {
           "type": "string",

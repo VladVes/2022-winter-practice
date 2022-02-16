@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const Status = new Schema(
   {
     name: { type: String, required: true, unique: true },
-    boardIds: { type: ['ObjectId'], required: true },
+    boardIds: { type: ['ObjectId'], required: true, ref: 'Board' },
   },
   {
     collection: 'Status',

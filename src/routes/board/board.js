@@ -63,6 +63,7 @@ export default (router) => {
     try {
       ctx.body = await Board.create({
         name: requestBody.name,
+        color: requestBody.color,
         projectId: requestBody.projectId,
       });
     } catch (error) {
@@ -92,13 +93,14 @@ export default (router) => {
         description: 'updated board',
         schema: { $ref: '#/definitions/Boards' }
     } */
-    const requestBody = ctx.request.body;
+    const { name, color } = ctx.request.body;
 
     try {
       ctx.body = await Board.findOneAndUpdate(
         { _id: ctx.params.id },
         {
-          name: requestBody.name,
+          name,
+          color,
         },
         { new: true },
       );
@@ -120,7 +122,6 @@ export default (router) => {
         description: 'removal success',
         schema: { $ref: '#/definitions/Success' }
     } */
-    console.log('DELETE', ctx.params);
     try {
       await Board.deleteOne({ _id: ctx.params.id });
       ctx.body = { success: true };

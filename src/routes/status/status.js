@@ -17,6 +17,7 @@ export default (router) => {
       ctx.body = await Status.find(ctx.request.query).lean();
     } catch (error) {
       ctx.body = error;
+      ctx.status = 400;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -35,6 +36,7 @@ export default (router) => {
       ctx.body = await Status.findById(ctx.params.id);
     } catch (error) {
       ctx.body = error;
+      ctx.status = 400;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -58,15 +60,16 @@ export default (router) => {
         description: 'created status',
         schema: { $ref: '#/definitions/Status' }
     } */
-    const requestBody = ctx.request.body;
+    const { name, boardsIds } = ctx.request.body;
 
     try {
       ctx.body = await Status.create({
-        name: requestBody.name,
-        boardsIds: requestBody.boardsIds,
+        name,
+        boardsIds,
       });
     } catch (error) {
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.status = 400;
       ctx.body = error;
     }
   });
@@ -105,6 +108,7 @@ export default (router) => {
       );
     } catch (error) {
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.status = 400;
       ctx.body = error;
     }
   });
@@ -126,6 +130,7 @@ export default (router) => {
       ctx.body = { success: true };
     } catch (error) {
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.status = 400;
       ctx.body = error;
     }
   });

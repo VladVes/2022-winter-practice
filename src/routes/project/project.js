@@ -17,6 +17,7 @@ export default (router) => {
       ctx.body = await Project.find(ctx.request.query);
     } catch (error) {
       ctx.body = error;
+      ctx.status = 400;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -35,6 +36,7 @@ export default (router) => {
       ctx.body = await Project.findById(ctx.params.id);
     } catch (error) {
       ctx.body = error;
+      ctx.status = 400;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -58,15 +60,22 @@ export default (router) => {
         description: 'created project',
         schema: { $ref: '#/definitions/Project' }
     } */
-    const requestBody = ctx.request.body;
+    const { name, description } = ctx.request.body;
 
     try {
+      if (description.length > 1024) {
+        const error = new Error(
+          `Description length must not exceed 1024 characters`,
+        );
+        ctx.status = 401;
+        throw error;
+      }
       ctx.body = await Project.create({
-        name: requestBody.name,
-        description: requestBody.description,
+        name,
+        description,
       });
     } catch (error) {
-      ctx.body = error;
+      ctx.body = { error: error.message };
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -92,19 +101,26 @@ export default (router) => {
         description: 'updated project',
         schema: { $ref: '#/definitions/Project' }
     } */
-    const requestBody = ctx.request.body;
+    const { name, description } = ctx.request.body;
 
     try {
+      if (description && description.length > 1024) {
+        const error = new Error(
+          `Description length must not exceed 1024 characters`,
+        );
+        ctx.status = 401;
+        throw error;
+      }
       ctx.body = await Project.findOneAndUpdate(
         { _id: ctx.params.id },
         {
-          name: requestBody.name,
-          description: requestBody.description,
+          name,
+          description,
         },
         { new: true },
       );
     } catch (error) {
-      ctx.body = error;
+      ctx.body = { error: error.message };
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -125,7 +141,8 @@ export default (router) => {
       await Project.deleteOne({ _id: ctx.params.id });
       ctx.body = { success: true };
     } catch (error) {
-      ctx.body = error;
+      ctx.status = 400;
+      ctx.body = { error: error.message };
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });

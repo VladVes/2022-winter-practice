@@ -104,6 +104,18 @@ export default (router) => {
     const requestBody = ctx.request.body;
 
     try {
+      if (requestBody.description && requestBody.description.length > 1024) {
+        const error = new Error(
+          `Description length must not exceed 1024 characters`,
+        );
+        ctx.status = 401;
+        throw error;
+      }
+      if (requestBody.name && requestBody.name.length > 128) {
+        const error = new Error(`Name length must not exceed 128 characters`);
+        ctx.status = 401;
+        throw error;
+      }
       ctx.body = await Task.findOneAndUpdate(
         { _id: ctx.params.id },
         {

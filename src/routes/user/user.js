@@ -18,6 +18,7 @@ export default (router) => {
       ctx.body = await User.find();
     } catch (error) {
       ctx.body = { error: error.message };
+      ctx.status = 400;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -36,6 +37,7 @@ export default (router) => {
       ctx.body = await User.findById(ctx.params.id);
     } catch (error) {
       ctx.body = { error: error.message };
+      ctx.status = 400;
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
   });
@@ -68,16 +70,27 @@ export default (router) => {
       avatarLink = '',
     } = ctx.request.body;
     try {
-      if (password.length < 8) {
-        const error = new Error(`Password must be at least 8 characters`);
+      if (password.length < 8 || password.length > 128) {
+        const error = new Error(
+          `Password must be at least 8 and not exceed 128 character`,
+        );
+        ctx.status = 401;
+        throw error;
+      }
+      if (email.length > 128 || name.length > 128) {
+        const error = new Error(
+          `Email and name length must not exceed 128 characters`,
+        );
+        ctx.status = 401;
         throw error;
       }
       const user = await User.findOne({ email });
       if (user) {
         const error = new Error(`User with ${email} already exists`);
+        ctx.status = 409;
         throw error;
       }
-      await User.create({
+      const newUser = await User.create({
         name,
         email,
         password: await argon2.hash(password),
@@ -85,7 +98,7 @@ export default (router) => {
         boardIds,
         avatarLink,
       });
-      ctx.body = { success: true };
+      ctx.body = newUser;
     } catch (error) {
       ctx.body = { error: error.message };
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
@@ -122,9 +135,17 @@ export default (router) => {
     } = ctx.request.body;
 
     try {
+      if ((email && email.length > 128) || (name && name.length > 128)) {
+        const error = new Error(
+          `Email and name length must not exceed 128 characters`,
+        );
+        ctx.status = 401;
+        throw error;
+      }
       const user = await User.findOne({ email });
       if (user) {
         const error = new Error(`User with ${email} already exists`);
+        ctx.status = 409;
         throw error;
       }
       ctx.body = await User.findOneAndUpdate(
@@ -138,6 +159,7 @@ export default (router) => {
         { new: true },
       );
     } catch (error) {
+      ctx.status = 400;
       ctx.body = { error: error.message };
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
     }
@@ -160,6 +182,7 @@ export default (router) => {
       ctx.body = { success: true };
     } catch (error) {
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
+      ctx.status = 400;
       ctx.body = { error: error.message };
     }
   });
