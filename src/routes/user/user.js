@@ -129,8 +129,8 @@ export default (router) => {
     const {
       name,
       email,
-      projectIds = [],
-      boardIds = [],
+      projectIds,
+      boardIds,
       avatarLink = '',
     } = ctx.request.body;
 
@@ -154,7 +154,9 @@ export default (router) => {
           name,
           email,
           avatarLink,
-          $push: { projectIds, boardIds },
+          // $push: { projectIds, boardIds },
+          projectIds,
+          boardIds,
         },
         { new: true },
       );

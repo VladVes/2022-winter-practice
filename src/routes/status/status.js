@@ -60,12 +60,12 @@ export default (router) => {
         description: 'created status',
         schema: { $ref: '#/definitions/Status' }
     } */
-    const { name, boardsIds } = ctx.request.body;
+    const { name, boardIds } = ctx.request.body;
 
     try {
       ctx.body = await Status.create({
         name,
-        boardsIds,
+        boardIds,
       });
     } catch (error) {
       handleError(error, `request body: ${JSON.stringify(ctx.request.body)}`);
@@ -102,7 +102,7 @@ export default (router) => {
         { _id: ctx.params.id },
         {
           name: requestBody.name,
-          $push: { boardIds: requestBody.boardId },
+          boardIds: requestBody.boardIds,
         },
         { new: true },
       );

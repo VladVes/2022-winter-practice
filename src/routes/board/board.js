@@ -93,7 +93,7 @@ export default (router) => {
         description: 'updated board',
         schema: { $ref: '#/definitions/Boards' }
     } */
-    const { name, color } = ctx.request.body;
+    const { name, color, projectId } = ctx.request.body;
 
     try {
       ctx.body = await Board.findOneAndUpdate(
@@ -101,6 +101,7 @@ export default (router) => {
         {
           name,
           color,
+          projectId,
         },
         { new: true },
       );

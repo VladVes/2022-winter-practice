@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const Status = new Schema(
   {
-    name: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
     boardIds: { type: ['ObjectId'], required: true, ref: 'Board' },
   },
   {
